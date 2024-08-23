@@ -13,6 +13,7 @@ import AllArtcraft from './Components/AllArtcraft.jsx';
 import AddCraftItem from './Components/AddCraftItem.jsx';
 import MyArtCraftList from './Components/MyArtCraftList.jsx';
 import Register from './Components/Register.jsx';
+import AuthProvider from './Providers/AuthProvider.jsx';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )
