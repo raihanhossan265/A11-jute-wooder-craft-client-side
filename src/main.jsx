@@ -14,6 +14,8 @@ import AddCraftItem from './Components/AddCraftItem.jsx';
 import MyArtCraftList from './Components/MyArtCraftList.jsx';
 import Register from './Components/Register.jsx';
 import AuthProvider from './Providers/AuthProvider.jsx';
+import Login from './Components/Login.jsx';
+import PrivetRoute from './Components/PrivetRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/allartcraft',
-        element:<AllArtcraft></AllArtcraft>
+        element:<PrivetRoute><AllArtcraft></AllArtcraft></PrivetRoute>
       },
       {
         path:"addcraftitem",
@@ -35,11 +37,15 @@ const router = createBrowserRouter([
       },
       {
         path:'myartcraftlist',
-        element:<MyArtCraftList></MyArtCraftList>
+        element:<PrivetRoute><MyArtCraftList></MyArtCraftList></PrivetRoute>
       },
       {
         path:'register',
         element:<Register></Register>
+      },
+      {
+        path:'login',
+        element:<Login></Login>
       }
     ]
   },

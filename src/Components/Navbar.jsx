@@ -1,12 +1,21 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../Providers/AuthProvider";
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext)
+    const handleSingOut = e =>{
+        console.log('blt clicked');
+        e.preventDefault()
+        logOut()
+        .then(result =>{console.log(result.user)})
+        .catch(error => console.log(error.message))
+    }
     const links = <div className="text-sm space-x-4 font-semibold">
         <NavLink to={'/'}>Home</NavLink>
         <NavLink to={'/allartcraft'}>All Art craft</NavLink>
         <NavLink to={'/addcraftitem'}>Add Craft Item</NavLink>
         <NavLink to={'/myartcraftlist'}>My Art Craft List</NavLink>
-        <NavLink to={'/register'}>Register</NavLink>
     </div>
     return (
         <div>
@@ -40,7 +49,19 @@ const Navbar = () => {
                         {links}
                     </ul>
                 </div>
-                
+                <div>
+                    {user ? 
+                    <div className="flex items-center ">
+                        <button onClick={handleSingOut}>Sign OUT</button>
+                        <div className="w-10">
+                        <img src='https://imagizer.imageshack.com/img923/1355/Ylw7R4.png' alt="" />
+                        </div>
+                    </div>
+                    :
+                    <NavLink to={'/register'}>Register</NavLink> 
+                    }
+                </div>
+
             </div>
         </div>
     );

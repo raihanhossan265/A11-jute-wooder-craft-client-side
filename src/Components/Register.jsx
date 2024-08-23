@@ -2,11 +2,15 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+
 
 const Register = () => {
-    const { createUser , signupGoogle} = useContext(AuthContext)
+    const { createUser } = useContext(AuthContext)
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState(null)
+    const [show, setShow] = useState(true)
 
     const handleRegister = e => {
         e.preventDefault()
@@ -17,20 +21,33 @@ const Register = () => {
         const password = form.password.value
         console.log(name, email, photo, password);
 
-        if(password.length < 6){
+        if (password.length < 6) {
             setError('Password must be at least 6 character')
             return
-        }else if(!/[A-Z]/.test(password)){
+        } else if (!/[A-Z]/.test(password)) {
             setError('At least 1 UpperCase')
             return
-        }else if(!/[a-z]/.test(password)){
+        } else if (!/[a-z]/.test(password)) {
             setError('At least 1 LowerCase')
             return
         }
 
         createUser(email, password)
             .then(result => {
+
+                const user = { name, email, photo, password }
                 setSuccess('SuccessFully created')
+                fetch('http://localhost:5000/users', {
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                    })
             })
             .catch(error => {
                 setError('Already Exits Email')
@@ -40,14 +57,17 @@ const Register = () => {
 
     }
 
-    const handleSignupWithGoogle = () =>{
+    const handleSignupWithGoogle = () => {
         signupGoogle()
-        .then(result => {
-            setSuccess('SuccessFully created')
-        })
-        .catch(error => {
-            setError('Already exits email')
-        })
+            .then(result => {
+                setSuccess('SuccessFully created')
+            })
+            .catch(error => {
+                setError('Already exits email')
+            })
+    }
+    const handleShow = () => {
+        console.log(show);
     }
 
 
@@ -84,7 +104,13 @@ const Register = () => {
                                     <label className="label">
                                         <span className="label-text">Password</span>
                                     </label>
-                                    <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+                                    <div className="relative">
+                                        <input type={show ? "password" : 'text'}
+                                            name="password"
+                                            placeholder="password"
+                                            className="input input-bordered" required />
+                                        <button className="absolute mr-10" onClick={() => handleShow(setShow(!show))}>{show ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}</button>
+                                    </div>
                                     <label className="label">
                                     </label>
                                 </div>
@@ -95,17 +121,14 @@ const Register = () => {
                             {
                                 error && <p className="text-red-700 text-center font-bold text-xl">{error}</p>
                             }
-                            <div className="form-control">
-                                <button onClick={handleSignupWithGoogle} className="btn">Sign Up With Google</button>
-                            </div>
                             <div className="form-control mt-6">
                                 <button className="btn btn-primary">Register</button>
                             </div>
                             <p class="flex justify-center mt-6 font-sans text-sm antialiased font-light leading-normal text-inherit">
-                                Don't have an account?
+                                Do have an account?
                                 <Link to={'/login'}
                                     class="block ml-1 font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900">
-                                    Sign up
+                                    Log In
                                 </Link>
                             </p>
                         </form>
