@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const Navbar = () => {
+
     const { user, logOut } = useContext(AuthContext)
     const handleSingOut = e =>{
         console.log('blt clicked');
@@ -54,7 +55,7 @@ const Navbar = () => {
                     <div className="flex items-center ">
                         <button onClick={handleSingOut}>Sign OUT</button>
                         <div className="w-10">
-                        <img src='https://imagizer.imageshack.com/img923/1355/Ylw7R4.png' alt="" />
+                        <img className="rounded-full" src="" alt="" />
                         </div>
                     </div>
                     :

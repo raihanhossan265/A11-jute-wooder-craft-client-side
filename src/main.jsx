@@ -16,6 +16,8 @@ import Register from './Components/Register.jsx';
 import AuthProvider from './Providers/AuthProvider.jsx';
 import Login from './Components/Login.jsx';
 import PrivetRoute from './Components/PrivetRoute.jsx';
+import SingleArtItems from './Components/singleArtItems.jsx';
+import Update from './Components/Update.jsx';
 
 const router = createBrowserRouter([
   {
@@ -25,11 +27,12 @@ const router = createBrowserRouter([
     children: [
       {
         path:'/',
-        element:<Home></Home>
+        element:<Home></Home>,
       },
       {
         path:'/allartcraft',
-        element:<PrivetRoute><AllArtcraft></AllArtcraft></PrivetRoute>
+        element:<PrivetRoute><AllArtcraft></AllArtcraft></PrivetRoute>,
+        loader : () => fetch('http://localhost:5000/artitems')
       },
       {
         path:"addcraftitem",
@@ -37,7 +40,8 @@ const router = createBrowserRouter([
       },
       {
         path:'myartcraftlist',
-        element:<PrivetRoute><MyArtCraftList></MyArtCraftList></PrivetRoute>
+        element:<PrivetRoute><MyArtCraftList></MyArtCraftList></PrivetRoute>,
+        loader : () => fetch('http://localhost:5000/artitems')
       },
       {
         path:'register',
@@ -46,6 +50,16 @@ const router = createBrowserRouter([
       {
         path:'login',
         element:<Login></Login>
+      },
+      {
+        path:'/singleartitems/:id',
+        element:<PrivetRoute><SingleArtItems></SingleArtItems></PrivetRoute>,
+        loader : ({params}) => fetch(`http://localhost:5000/artitems/${params.id}`)
+      },
+      {
+        path:'/update/:id',
+        element:<Update></Update>,
+        loader : ({params}) => fetch(`http://localhost:5000/artitems/${params.id}`)
       }
     ]
   },
